@@ -82,8 +82,7 @@ export const Story: React.FC = () => {
       break;
     }
     case "blink": {
-      const b2 = C(5).start;
-      const lamp = blinkLevel(t, [b2 + 0.15, b2 + 0.95, b2 + 1.75]);
+      const lamp = blinkLevel(t, timeline.marks.blinks);
       visual = (
         <Svg zoom={1.55} cx={880} cy={1180}>
           <Room>
@@ -145,8 +144,9 @@ export const Story: React.FC = () => {
     }
     case "fingers": {
       const reach = interpolate(sT, [0.2, 1.6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+      const pulse = timeline.marks.count.some((m: number) => t >= m && t < m + 0.18) ? 1.03 : 1;
       visual = (
-        <Svg zoom={push}>
+        <Svg zoom={push * pulse}>
           <rect width={1080} height={1920} fill={pal.night.wallDark} />
           <KidFace eyesOpen={0} squeeze={1} />
           <Fingers reach={reach} />
@@ -252,8 +252,7 @@ export const Story: React.FC = () => {
       break;
     }
     case "blink2": {
-      const b = sceneStart("blink2", t);
-      const lamp = blinkLevel(t, [b + 2.9, b + 3.8]);
+      const lamp = blinkLevel(t, timeline.marks.blinks2);
       const dark = interpolate(sT, [0, 2.5], [0, 0.55], { extrapolateRight: "clamp" });
       visual = (
         <Svg zoom={1.25} cx={700} cy={1050}>
@@ -334,7 +333,7 @@ export const Story: React.FC = () => {
       <AbsoluteFill style={{ background: "#000", opacity: dip * 0.9 }} />
 
       {/* audio */}
-      <Audio src={staticFile("vo.wav")} volume={1} />
+      <Audio src={staticFile(timeline.audio)} volume={1} />
       <Audio src={staticFile("ambient.wav")} volume={0.55} />
       <Sequence from={f(C(8).start + 0.05)} durationInFrames={20}>
         <Audio src={staticFile("creak.wav")} volume={0.7} />
