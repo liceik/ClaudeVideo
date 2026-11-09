@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "hf": "hyperframes"
+    "hf": "hyperframes",
+    "studio": "remotion studio",
+    "render": "remotion render HelloWorld out/HelloWorld.mp4"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,15 @@
   },
   "homepage": "https://github.com/liceik/ClaudeVideo#readme",
   "devDependencies": {
-    "hyperframes": "^0.9.26"
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "hyperframes": "^0.9.26",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.542",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.542"
   }
 }
