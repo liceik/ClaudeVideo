@@ -1,0 +1,24 @@
+{
+  "name": "claudevideo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hf": "hyperframes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liceik/ClaudeVideo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liceik/ClaudeVideo/issues"
+  },
+  "homepage": "https://github.com/liceik/ClaudeVideo#readme",
+  "devDependencies": {
+    "hyperframes": "^0.9.26"
+  }
+}
