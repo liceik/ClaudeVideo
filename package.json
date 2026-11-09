@@ -9,7 +9,8 @@
     "studio": "remotion studio",
     "render": "remotion render Showcase out/Showcase.mp4",
     "voiceover": "python3 -I scripts/build_voiceover.py",
-    "render:story": "remotion render Nightlight out/Nightlight.mp4"
+    "render:story": "remotion render Nightlight out/Nightlight.mp4",
+    "render:story2": "remotion render Nightlight2 out/Nightlight2.mp4"
   },
   "repository": {
     "type": "git",

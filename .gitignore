@@ -2,3 +2,4 @@ node_modules/
 renders/
 out/
 public/*.wav
+public/*.mp3

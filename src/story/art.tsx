@@ -8,6 +8,7 @@ import React from "react";
 export const pal = {
   night: { wall: "#1A2140", wallDark: "#121832", floor: "#5A3E2B", floorLine: "#4A3222", trim: "#2B2F5C" },
   morning: { wall: "#C9D6EA", wallDark: "#B3C2DA", floor: "#B07A4E", floorLine: "#9A6840", trim: "#8FA3C8" },
+  evening: { wall: "#3A2F55", wallDark: "#2C2342", floor: "#7A5236", floorLine: "#64422B", trim: "#4A3F6E" },
   skin: "#F6D2B5",
   hair: "#3B2A22",
   blanket: "#6A4FBF",
@@ -26,7 +27,7 @@ export const pal = {
   alert: "#FF4D4D",
 };
 
-type Mode = "night" | "morning";
+export type Mode = "night" | "morning" | "evening";
 
 export const Room: React.FC<{ mode?: Mode; children?: React.ReactNode }> = ({ mode = "night", children }) => {
   const p = pal[mode];
@@ -51,8 +52,9 @@ export const Room: React.FC<{ mode?: Mode; children?: React.ReactNode }> = ({ mo
 
 export const Window: React.FC<{ mode?: Mode; x?: number; y?: number }> = ({ mode = "night", x = 620, y = 360 }) => (
   <g transform={`translate(${x} ${y})`}>
-    <rect x={-18} y={-18} width={356} height={396} rx={10} fill={mode === "night" ? "#2E3568" : "#F2F5FA"} />
-    <rect width={320} height={360} fill={mode === "night" ? "#0E1430" : "#9FD4F5"} />
+    <rect x={-18} y={-18} width={356} height={396} rx={10} fill={mode === "night" ? "#2E3568" : mode === "evening" ? "#5A4A80" : "#F2F5FA"} />
+    <rect width={320} height={360} fill={mode === "night" ? "#0E1430" : mode === "evening" ? "#E07A4A" : "#9FD4F5"} />
+    {mode === "evening" && <rect width={320} height={180} fill="#6B3F7A" opacity={0.7} />}
     {mode === "night" ? (
       <>
         <circle cx={230} cy={100} r={44} fill={pal.moon} />
@@ -60,14 +62,16 @@ export const Window: React.FC<{ mode?: Mode; x?: number; y?: number }> = ({ mode
           <circle key={i} cx={(i * 97) % 320} cy={(i * 131) % 360} r={2} fill="#fff" opacity={0.7} />
         ))}
       </>
+    ) : mode === "evening" ? (
+      <circle cx={80} cy={200} r={40} fill="#FFC27A" />
     ) : (
       <>
         <circle cx={240} cy={90} r={56} fill="#FFE98A" />
         <rect x={0} y={250} width={320} height={110} fill="#B9E3FF" opacity={0.6} />
       </>
     )}
-    <rect x={156} width={10} height={360} fill={mode === "night" ? "#2E3568" : "#F2F5FA"} />
-    <rect y={176} width={320} height={10} fill={mode === "night" ? "#2E3568" : "#F2F5FA"} />
+    <rect x={156} width={10} height={360} fill={mode === "night" ? "#2E3568" : mode === "evening" ? "#5A4A80" : "#F2F5FA"} />
+    <rect y={176} width={320} height={10} fill={mode === "night" ? "#2E3568" : mode === "evening" ? "#5A4A80" : "#F2F5FA"} />
   </g>
 );
 
@@ -281,5 +285,38 @@ export const Ripples: React.FC<{ t: number; x: number; y: number; color?: string
       const p = (t * 0.8 + i / 3) % 1;
       return <circle key={i} cx={x} cy={y} r={40 + p * 260} stroke={color} strokeWidth={4} fill="none" opacity={(1 - p) * 0.5} />;
     })}
+  </g>
+);
+
+
+/** Kid sitting up holding a phone; ripples mark the voice on the line. */
+export const Phone: React.FC<{ x?: number; y?: number }> = ({ x = 300, y = 1290 }) => (
+  <g transform={`translate(${x} ${y})`}>
+    <rect x={-22} y={-60} width={44} height={84} rx={8} fill="#1C1C24" />
+    <rect x={-16} y={-52} width={32} height={60} rx={4} fill="#9FD4F5" opacity={0.9} />
+  </g>
+);
+
+/** Fingers reaching in from the side to the cheek. */
+export const SideFingers: React.FC<{ reach: number }> = ({ reach }) => {
+  const x = 1500 - reach * 700;
+  return (
+    <g transform={`translate(${x} 980)`}>
+      <rect x={0} y={-60} width={700} height={120} fill={pal.figure} />
+      {[-110, -55, 0, 55, 110].map((yy, i) => (
+        <path key={i} d={`M60 ${yy * 0.5} Q-200 ${yy} -${440 + (i === 2 ? 40 : 0)} ${yy}`} stroke={pal.figure} strokeWidth={34} fill="none" strokeLinecap="round" />
+      ))}
+    </g>
+  );
+};
+
+/** Mum as a dark silhouette in the doorway, lit from behind. */
+export const DoorwayMum: React.FC<{ x?: number; y?: number; smile?: number }> = ({ x = 220, y = 900, smile = 0.4 }) => (
+  <g transform={`translate(${x} ${y})`}>
+    <path d="M-100 420 q0 -300 100 -300 q100 0 100 300 Z" fill="#241A33" />
+    <rect x={-100} y={400} width={200} height={240} fill="#241A33" />
+    <circle cx={0} cy={0} r={82} fill="#2E2240" />
+    <circle cx={0} cy={-96} r={30} fill="#2E2240" />
+    <path d={`M${-22 - smile * 26} 30 q${22 + smile * 26} ${26 + smile * 40} ${44 + smile * 52} 0`} stroke="#F4EEDC" strokeWidth={6} fill="none" strokeLinecap="round" opacity={0.9} />
   </g>
 );
