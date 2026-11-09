@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "hf": "hyperframes",
     "studio": "remotion studio",
-    "render": "remotion render HelloWorld out/HelloWorld.mp4"
+    "render": "remotion render Showcase out/Showcase.mp4"
   },
   "repository": {
     "type": "git",
