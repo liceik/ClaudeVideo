@@ -12,7 +12,8 @@
     "render:story": "remotion render Nightlight out/Nightlight.mp4",
     "render:story2": "remotion render Nightlight2 out/Nightlight2.mp4",
     "render:story3": "remotion render Nightlight3 out/Nightlight3.mp4",
-    "render:story4": "remotion render Nightlight4 out/Nightlight4.mp4"
+    "render:story4": "remotion render Nightlight4 out/Nightlight4.mp4",
+    "render:button": "remotion render TenthButton1 out/TenthButton1.mp4"
   },
   "repository": {
     "type": "git",
