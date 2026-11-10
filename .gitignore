@@ -3,3 +3,4 @@ renders/
 out/
 public/*.wav
 public/*.mp3
+public/sfx_*.mp3
