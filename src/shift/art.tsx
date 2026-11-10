@@ -148,14 +148,14 @@ export const Clock: React.FC<{ x?: number; y?: number; text: string; scale?: num
 );
 
 /* ───────── Characters ───────── */
-export const Clerk: React.FC<{ x?: number; y?: number; scale?: number; look?: number; mouth?: number; worry?: number; blink?: boolean }> = ({
-  x = 900, y = 1100, scale = 1, look = 0, mouth = 0, worry = 0, blink = false,
+export const Clerk: React.FC<{ x?: number; y?: number; scale?: number; look?: number; mouth?: number; worry?: number; blink?: boolean; badge?: boolean; down?: number }> = ({
+  x = 900, y = 1100, scale = 1, look = 0, mouth = 0, worry = 0, blink = false, badge = true, down = 0,
 }) => (
   <g transform={`translate(${x} ${y}) scale(${scale})`}>
     {/* torso: vest */}
     <path d="M-120 420 q0 -230 120 -230 q120 0 120 230 Z" fill="#2C5F8A" {...O} />
     <path d="M-50 200 L0 330 L50 200 Z" fill="#F2F6FF" {...O} />
-    <rect x={30} y={250} width={60} height={24} rx={4} fill={neon.amber} {...O} />
+    {badge && <rect x={30} y={250} width={60} height={24} rx={4} fill={neon.amber} {...O} />}
     {/* neck + head */}
     <rect x={-26} y={70} width={52} height={60} fill="#E8B892" {...O} />
     <circle cx={0} cy={0} r={96} fill="#F1C7A3" {...O} />
@@ -168,8 +168,8 @@ export const Clerk: React.FC<{ x?: number; y?: number; scale?: number; look?: nu
         {blink ? <line x1={-16} y1={0} x2={16} y2={0} stroke={INK} strokeWidth={5} strokeLinecap="round" /> : (
           <>
             <ellipse cx={0} cy={0} rx={18} ry={16 + worry * 6} fill="#fff" stroke={INK} strokeWidth={4} />
-            <circle cx={look * 8} cy={2} r={8} fill={INK} />
-            <circle cx={look * 8 + 3} cy={-1} r={2.5} fill="#fff" />
+            <circle cx={look * 8} cy={2 + down * 9} r={8} fill={INK} />
+            <circle cx={look * 8 + 3} cy={-1 + down * 9} r={2.5} fill="#fff" />
           </>
         )}
         <path d={`M-20 ${-26 - worry * 4} q20 ${-10 + worry * 14} 40 0`} stroke={INK} strokeWidth={5} fill="none" strokeLinecap="round" />
@@ -326,4 +326,155 @@ export const Defs: React.FC = () => (
       <stop offset="1" stopColor="#fff" stopOpacity={0.3} />
     </linearGradient>
   </defs>
+);
+
+/* ───────── Episode 2 props ───────── */
+
+/** Old courtyard: panel block with lit windows, swings, transformer box, entrance no. 4. */
+export const Courtyard: React.FC<{ light?: number }> = ({ light = 1 }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#060812" />
+    {/* panel block */}
+    <rect x={40} y={200} width={1000} height={1100} fill="#131A2E" {...O} />
+    {Array.from({ length: 9 }).map((_, r) => (
+      <g key={r}>
+        <rect x={40} y={200 + r * 122} width={1000} height={6} fill="#0C1222" />
+        {Array.from({ length: 7 }).map((_, c) => (
+          <rect key={c} x={90 + c * 140} y={236 + r * 122} width={70} height={60} fill={random(`cw${r}${c}`) > 0.75 ? "#F3D37A" : "#0B1020"} opacity={0.9} stroke={INK} strokeWidth={3} />
+        ))}
+      </g>
+    ))}
+    {/* entrance 4 with canopy and lamp */}
+    <rect x={430} y={1100} width={220} height={200} fill="#0A0F1E" {...O} />
+    <rect x={400} y={1070} width={280} height={30} fill="#1C2742" {...O} />
+    <circle cx={540} cy={1090} r={14} fill={neon.amber} opacity={light} style={{ filter: "url(#glow)" }} />
+    <polygon points="440,1100 640,1100 720,1420 360,1420" fill={neon.amber} opacity={0.12 * light} />
+    <text x={540} y={1050} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontWeight={700} fontSize={44} fill={neon.amber} opacity={light}>4</text>
+    {/* ground */}
+    <rect y={1300} width={1080} height={620} fill="#0A0D1A" />
+    {/* swings */}
+    <g transform="translate(180 1360)">
+      <line x1={-80} y1={0} x2={0} y2={-220} stroke="#2B3550" strokeWidth={12} />
+      <line x1={80} y1={0} x2={0} y2={-220} stroke="#2B3550" strokeWidth={12} />
+      <line x1={-30} y1={-215} x2={-30} y2={-60} stroke="#2B3550" strokeWidth={5} />
+      <line x1={30} y1={-215} x2={30} y2={-60} stroke="#2B3550" strokeWidth={5} />
+      <rect x={-40} y={-64} width={80} height={14} fill="#2B3550" />
+    </g>
+    {/* transformer box */}
+    <rect x={820} y={1200} width={200} height={200} fill="#1A2238" {...O} />
+    <polygon points="920,1240 900,1290 925,1290 905,1350 950,1280 925,1280 945,1240" fill={neon.amber} opacity={0.9} />
+    {/* wet ground reflections */}
+    {Array.from({ length: 12 }).map((_, i) => <ellipse key={i} cx={100 + i * 85} cy={1480 + random(`cy${i}`) * 380} rx={30 + random(`cz${i}`) * 60} ry={4} fill="#E6F7FF" opacity={0.07} />)}
+  </g>
+);
+
+/** Stairwell: concrete steps going up, a single bulb, peeling paint. */
+export const Stairwell: React.FC<{ bulb?: number }> = ({ bulb = 1 }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#0B0E18" />
+    <rect width={1080} height={1000} fill="#17213A" />
+    <rect y={1000} width={1080} height={30} fill="#0C1222" />
+    {/* peeling paint patches */}
+    {Array.from({ length: 10 }).map((_, i) => <ellipse key={i} cx={random(`pp${i}`) * 1080} cy={200 + random(`pq${i}`) * 700} rx={40 + random(`pr${i}`) * 80} ry={20 + random(`ps${i}`) * 40} fill="#0E1426" opacity={0.7} />)}
+    {/* steps */}
+    {Array.from({ length: 9 }).map((_, i) => (
+      <g key={i}>
+        <rect x={140 + i * 20} y={1030 + i * 95} width={800 - i * 40} height={30} fill="#2A3350" {...O} />
+        <rect x={140 + i * 20} y={1060 + i * 95} width={800 - i * 40} height={65} fill="#1A2238" />
+      </g>
+    ))}
+    {/* railing */}
+    <path d="M160 1030 L160 1920" stroke="#3A4466" strokeWidth={16} />
+    <path d="M160 1030 L920 1030" stroke="#3A4466" strokeWidth={16} />
+    {/* bulb */}
+    <line x1={540} y1={0} x2={540} y2={120} stroke={INK} strokeWidth={4} />
+    <circle cx={540} cy={150} r={30} fill="#FFE9B0" opacity={bulb} style={{ filter: "url(#glow)" }} />
+    <circle cx={540} cy={150} r={360} fill={neon.amber} opacity={0.12 * bulb} style={{ filter: "url(#glowSoft)" }} />
+  </g>
+);
+
+/** Flat door with the number 47, slightly open. */
+export const FlatDoor: React.FC<{ open?: number; x?: number }> = ({ open = 0, x = 330 }) => (
+  <g transform={`translate(${x} 620)`}>
+    <rect x={-30} y={-30} width={480} height={860} fill="#1C2742" {...O} />
+    <rect width={420} height={800} fill="#07080F" />
+    <rect width={420 * (1 - open * 0.85)} height={800} fill="#4A3826" {...O} />
+    <rect x={30} y={40} width={360 * (1 - open * 0.85)} height={300} fill="#5A4530" stroke={INK} strokeWidth={4} />
+    <rect x={30} y={420} width={360 * (1 - open * 0.85)} height={330} fill="#5A4530" stroke={INK} strokeWidth={4} />
+    {open < 0.5 && <circle cx={380} cy={400} r={14} fill="#C9A25A" {...O} />}
+    <g transform={`translate(${210 * (1 - open * 0.85)} 0)`}>
+      <rect x={-70} y={-110} width={140} height={70} rx={10} fill="#0E1426" {...O} />
+      <text x={0} y={-60} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontWeight={700} fontSize={48} fill="#D9C39A">47</text>
+    </g>
+  </g>
+);
+
+/** The empty flat: bare walls, dust, the kitchen window at the back. */
+export const EmptyFlat: React.FC<{ figure?: number; children?: React.ReactNode }> = ({ figure = 0, children }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#0C1020" />
+    <rect width={1080} height={1250} fill="#1A2033" />
+    {/* wallpaper remains */}
+    {Array.from({ length: 8 }).map((_, i) => <rect key={i} x={random(`wp${i}`) * 1000} y={200 + random(`wq${i}`) * 700} width={60 + random(`wr${i}`) * 160} height={120 + random(`ws${i}`) * 300} fill="#242B45" opacity={0.6} />)}
+    <rect y={1250} width={1080} height={670} fill="#0F1322" />
+    {Array.from({ length: 7 }).map((_, i) => <line key={i} x1={0} y1={1250 + i * 95} x2={1080} y2={1250 + i * 95} stroke="#161B2E" strokeWidth={3} />)}
+    {/* dust */}
+    {Array.from({ length: 60 }).map((_, i) => <circle key={i} cx={random(`dx${i}`) * 1080} cy={random(`dy${i}`) * 1920} r={1.5 + random(`dr${i}`) * 2} fill="#9FB0D0" opacity={0.25} />)}
+    {/* window */}
+    <rect x={330} y={300} width={420} height={400} fill="#0A1A2A" {...O} />
+    <rect x={330} y={300} width={420} height={400} fill="#3FE0F0" opacity={0.08} />
+    <rect x={535} y={300} width={10} height={400} fill="#1C2742" />
+    <rect x={330} y={495} width={420} height={10} fill="#1C2742" />
+    {figure > 0 && (
+      <g opacity={figure}>
+        <path d="M440 720 q-10 -300 100 -300 q110 0 100 300 Z" fill="#070710" />
+        <path d="M450 450 q-20 -180 90 -180 q110 0 90 180 q-50 -30 -90 -30 q-40 0 -90 30 Z" fill="#0B0A18" {...O} />
+      </g>
+    )}
+    {children}
+  </g>
+);
+
+/** Kitchen table covered with tagged lost things. */
+export const LostTable: React.FC<{ reveal?: number; badge?: number }> = ({ reveal = 1, badge = 0 }) => {
+  const items = Array.from({ length: 48 }).map((_, i) => ({
+    x: 100 + (i % 8) * 120 + random(`ix${i}`) * 30,
+    y: 1180 + Math.floor(i / 8) * 90 + random(`iy${i}`) * 20,
+    c: ["#E24B4B", "#F2C14E", "#3F8CFF", "#59D98E", "#FF8A3D", "#B98CFF", "#F2F6FF"][Math.floor(random(`ic${i}`) * 7)],
+    k: Math.floor(random(`ik${i}`) * 4),
+  }));
+  return (
+    <g>
+      <rect x={40} y={1120} width={1000} height={60} fill="#6B4A2C" {...O} />
+      <rect x={60} y={1180} width={960} height={520} fill="#7A5A3C" />
+      {items.slice(0, Math.floor(items.length * reveal)).map((it, i) => (
+        <g key={i} transform={`translate(${it.x} ${it.y})`}>
+          {it.k === 0 && <rect x={-22} y={-14} width={44} height={28} rx={8} fill={it.c} {...O} />}
+          {it.k === 1 && <circle r={18} fill={it.c} {...O} />}
+          {it.k === 2 && <rect x={-14} y={-24} width={28} height={48} rx={6} fill={it.c} {...O} />}
+          {it.k === 3 && <path d="M-20 10 q20 -40 40 0 Z" fill={it.c} {...O} />}
+          <rect x={14} y={-30} width={40} height={20} fill="#F4EEE2" stroke={INK} strokeWidth={2} />
+          <line x1={18} y1={-24} x2={48} y2={-24} stroke={INK} strokeWidth={2} opacity={0.6} />
+          <line x1={18} y1={-16} x2={40} y2={-16} stroke={INK} strokeWidth={2} opacity={0.6} />
+        </g>
+      ))}
+      <Key x={300} y={1230} scale={0.6} />
+      <Dino x={560} y={1260} scale={0.35} />
+      <g transform="translate(820 1240) rotate(8) scale(0.26)"><rect x={-220} y={-260} width={440} height={520} fill="#F4EEE2" {...O} /></g>
+      {badge > 0 && <g opacity={badge}><Badge x={540} y={1500} scale={1.6} /></g>}
+    </g>
+  );
+};
+
+/** The clerk's store name badge with a paper tag tied to it. */
+export const Badge: React.FC<{ x?: number; y?: number; scale?: number; tagText?: string }> = ({ x = 540, y = 960, scale = 1, tagText = "" }) => (
+  <g transform={`translate(${x} ${y}) scale(${scale})`}>
+    <rect x={-90} y={-30} width={180} height={60} rx={8} fill={neon.amber} {...O} />
+    <rect x={-70} y={-16} width={110} height={10} fill="#1E3B5C" />
+    <rect x={-70} y={4} width={70} height={8} fill="#1E3B5C" opacity={0.6} />
+    <circle cx={64} cy={0} r={12} fill="#1E3B5C" />
+    <line x1={64} y1={0} x2={120} y2={-50} stroke="#D9C39A" strokeWidth={3} />
+    <rect x={110} y={-90} width={120} height={50} fill="#F4EEE2" stroke={INK} strokeWidth={3} />
+    <text x={170} y={-57} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontSize={20} fill={INK}>{tagText}</text>
+  </g>
 );
