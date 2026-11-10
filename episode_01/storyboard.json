@@ -1,0 +1,58 @@
+[
+ {
+  "id": "01_panel",
+  "start": 0.0,
+  "end": 9.08,
+  "description": "Панель лифта, кнопки 1–9, медленный наезд вверх",
+  "prompt": "elevator button panel, buttons 1-9, cold fluorescent light, grainy, phone camera, dark corners"
+ },
+ {
+  "id": "02_button",
+  "start": 9.08,
+  "end": 19.22,
+  "description": "Чёрная кнопка без цифры с царапиной, рядом 9 (макро)",
+  "prompt": "extra black elevator button with a scratch, no number, macro shot, eerie"
+ },
+ {
+  "id": "03_phone",
+  "start": 19.22,
+  "end": 24.52,
+  "description": "Экран телефона с фото панели, кнопки нет; RGB-глитч на «не было»",
+  "prompt": "hand holding phone, photo of the panel without the extra button, dim hallway"
+ },
+ {
+  "id": "04_desk",
+  "start": 24.52,
+  "end": 33.14,
+  "description": "Пустая стойка консьержки ночью, тёплая лампа",
+  "prompt": "empty concierge desk at night, warm lamp, empty lobby"
+ },
+ {
+  "id": "05_cabin",
+  "start": 33.14,
+  "end": 51.2,
+  "description": "Лифт с открытой дверью, пустая кабина, горит только «10»",
+  "prompt": "open elevator, empty cabin, only button 10 lit green"
+ },
+ {
+  "id": "06_display",
+  "start": 51.2,
+  "end": 58.18,
+  "description": "Табло: 9 → 10 → 11, красные цифры, мерцание; глитч на «одиннадцать»",
+  "prompt": "elevator floor indicator red digits 11, flicker"
+ },
+ {
+  "id": "07_doors",
+  "start": 58.18,
+  "end": 59.68,
+  "description": "Закрытые двери изнутри, отражение героя, сзади приоткрыта дверь",
+  "prompt": "closed elevator doors from inside, reflection, door ajar behind"
+ },
+ {
+  "id": "08_choice",
+  "start": 59.68,
+  "end": 69.15,
+  "description": "Карточки А: Остаться / Б: Выйти + «Голосуй в комментариях»",
+  "prompt": "(рисуется кодом)"
+ }
+]
