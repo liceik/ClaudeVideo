@@ -320,3 +320,129 @@ export const DoorwayMum: React.FC<{ x?: number; y?: number; smile?: number }> = 
     <path d={`M${-22 - smile * 26} 30 q${22 + smile * 26} ${26 + smile * 40} ${44 + smile * 52} 0`} stroke="#F4EEDC" strokeWidth={6} fill="none" strokeLinecap="round" opacity={0.9} />
   </g>
 );
+
+/* ───────── Part 3 props ───────── */
+
+/** Corridor seen from inside: warm walls, the bedroom door on the right, a lamp glow. */
+export const Corridor: React.FC<{ children?: React.ReactNode; dim?: number }> = ({ children, dim = 0 }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#5A4636" />
+    <rect y={1320} width={1080} height={600} fill="#3E2C20" />
+    {Array.from({ length: 9 }).map((_, i) => (
+      <rect key={i} y={1320 + i * 68} width={1080} height={3} fill="#33241A" />
+    ))}
+    <rect y={1300} width={1080} height={26} fill="#6E5848" />
+    {/* ceiling lamp glow */}
+    <circle cx={540} cy={200} r={520} fill="#FFD27A" opacity={0.18} />
+    <circle cx={540} cy={200} r={220} fill="#FFE9B0" opacity={0.25} />
+    {children}
+    <rect width={1080} height={1920} fill="#07080F" opacity={dim} />
+  </g>
+);
+
+/** The bedroom door seen from the corridor (closed, wood), with an optional light strip underneath. */
+export const CorridorDoor: React.FC<{ x?: number; strip?: number; shake?: number; open?: number }> = ({
+  x = 410,
+  strip = 0,
+  shake = 0,
+  open = 0,
+}) => (
+  <g transform={`translate(${x + shake} 540)`}>
+    <rect x={-16} y={-16} width={292} height={790} rx={8} fill="#3B2A1E" />
+    <rect width={260} height={760} fill="#0B0D1A" />
+    <rect width={260 * (1 - open)} height={760} fill="#7A5A3C" />
+    <rect x={24} y={30} width={212 * (1 - open)} height={300} fill="#8A6A48" />
+    <rect x={24} y={400} width={212 * (1 - open)} height={320} fill="#8A6A48" />
+    {open < 0.6 && <circle cx={34} cy={400} r={12} fill="#E3B341" />}
+    {strip > 0 && (
+      <>
+        <rect x={0} y={756} width={260} height={10} fill="#FFD27A" opacity={strip} />
+        <rect x={-40} y={760} width={340} height={70} fill="#FFD27A" opacity={strip * 0.25} />
+      </>
+    )}
+  </g>
+);
+
+/** Mum holding the kid against her; the kid's eyes stay shut. */
+export const Hug: React.FC<{ x?: number; y?: number; tight?: number; scale?: number }> = ({
+  x = 540,
+  y = 980,
+  tight = 0,
+  scale = 1,
+}) => (
+  <g transform={`translate(${x} ${y}) scale(${scale})`}>
+    {/* mum body */}
+    <path d="M-150 460 q0 -340 150 -340 q150 0 150 340 Z" fill={pal.mum.dress} />
+    <rect x={-150} y={440} width={300} height={300} fill={pal.mum.dress} />
+    <circle cx={0} cy={0} r={100} fill={pal.mum.skin} />
+    <path d="M-100 -16 a100 100 0 0 1 200 0 a125 70 0 0 0 -200 0" fill={pal.mum.hair} />
+    <circle cx={0} cy={-114} r={36} fill={pal.mum.hair} />
+    <Eyes open={false} scale={0.8} />
+    {/* kid, face to her chest */}
+    <g transform={`translate(0 ${300 - tight * 10})`}>
+      <rect x={-60} y={40} width={120} height={120} rx={36} fill="#5EC2E8" />
+      <circle cx={0} cy={0} r={78} fill={pal.skin} />
+      <path d="M-78 -10 a78 78 0 0 1 156 0 a100 60 0 0 0 -156 0" fill={pal.hair} />
+      <g transform="translate(0 10)">
+        <Eyes open={false} scale={0.62} squeeze={1} />
+      </g>
+    </g>
+    {/* mum arms around the kid */}
+    <path d={`M-150 240 q-${60 + tight * 30} 180 120 ${200 - tight * 20}`} stroke={pal.mum.skin} strokeWidth={38} fill="none" strokeLinecap="round" />
+    <path d={`M150 240 q${60 + tight * 30} 180 -120 ${200 - tight * 20}`} stroke={pal.mum.skin} strokeWidth={38} fill="none" strokeLinecap="round" />
+  </g>
+);
+
+/** Kid crawling on the floor, eyes shut, seen from the side. */
+export const Crawl: React.FC<{ x?: number; y?: number; phase?: number }> = ({ x = 420, y = 1380, phase = 0 }) => {
+  const a = Math.sin(phase * Math.PI * 2) * 12;
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <rect x={-140} y={-10} width={220} height={90} rx={40} fill="#5EC2E8" />
+      <path d={`M-120 70 q-30 60 ${-60 + a} 80`} stroke="#5EC2E8" strokeWidth={34} fill="none" strokeLinecap="round" />
+      <path d={`M40 70 q10 60 ${60 - a} 80`} stroke={pal.skin} strokeWidth={30} fill="none" strokeLinecap="round" />
+      <g transform="translate(110 -10)">
+        <circle cx={0} cy={0} r={64} fill={pal.skin} />
+        <path d="M-64 -10 a64 64 0 0 1 128 0 a82 50 0 0 0 -128 0" fill={pal.hair} />
+        <g transform="translate(10 6)">
+          <Eyes open={false} scale={0.5} squeeze={1} />
+        </g>
+      </g>
+    </g>
+  );
+};
+
+/** A small hand reaching for a door knob; close-up. */
+export const Knob: React.FC<{ reach: number; jitter?: number }> = ({ reach, jitter = 0 }) => (
+  <g transform={`translate(${jitter} 0)`}>
+    <rect width={1080} height={1920} fill="#5A4030" />
+    <rect x={0} y={0} width={1080} height={1920} fill="#6E4F3A" />
+    <rect x={120} y={120} width={840} height={1680} rx={24} fill="#7E5C42" />
+    <circle cx={540} cy={960} r={120} fill="#E3B341" />
+    <circle cx={540} cy={960} r={80} fill="#C9972C" />
+    {/* hand from the left */}
+    <g transform={`translate(${-420 + reach * 760} 1010)`}>
+      <rect x={-600} y={-70} width={620} height={150} rx={60} fill={pal.skin} />
+      {[-50, -15, 20, 55].map((yy, i) => (
+        <path key={i} d={`M0 ${yy} q110 ${-10 + i * 4} ${150 + (i === 1 ? 30 : 0)} ${yy + 10}`} stroke={pal.skin} strokeWidth={40} fill="none" strokeLinecap="round" />
+      ))}
+    </g>
+  </g>
+);
+
+/** Dark shadow on the floor creeping toward the camera. */
+export const Shadow: React.FC<{ size: number }> = ({ size }) => (
+  <ellipse cx={540} cy={1700} rx={200 + size * 500} ry={60 + size * 200} fill="#000" opacity={0.65} />
+);
+
+/** Warm arms reaching in from the light to pull the kid through. */
+export const WarmArms: React.FC<{ reach: number }> = ({ reach }) => {
+  const x = -700 + reach * 700;
+  return (
+    <g transform={`translate(${x} 0)`}>
+      {[880, 1040].map((yy, i) => (
+        <path key={i} d={`M-100 ${yy} q400 ${i ? 60 : -60} 760 ${yy + (i ? -40 : 40)}`} stroke={pal.mum.skin} strokeWidth={70} fill="none" strokeLinecap="round" />
+      ))}
+    </g>
+  );
+};
