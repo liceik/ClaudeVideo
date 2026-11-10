@@ -289,3 +289,99 @@ export const CamUi: React.FC<{ t: number; label?: string }> = ({ t, label = "REC
     </g>
   );
 };
+
+/* ───────── Episode 2 props ───────── */
+
+/** Hallway of the apartment block: doors without numbers, a flickering tube, linoleum. */
+export const Hallway: React.FC<{ tube?: number; numbers?: boolean; lightUnder?: number }> = ({ tube = 1, numbers = false, lightUnder = 0 }) => (
+  <g>
+    <rect width={1080} height={1920} fill={col.wallDark} />
+    {/* perspective walls */}
+    <polygon points="0,0 1080,0 1080,1920 0,1920" fill="#1A201D" />
+    <polygon points="0,200 1080,200 1080,1500 0,1500" fill="#242B28" />
+    <polygon points="0,1500 1080,1500 1080,1920 0,1920" fill="#2E2A22" />
+    {Array.from({ length: 8 }).map((_, i) => <line key={i} x1={0} y1={1500 + i * 55} x2={1080} y2={1500 + i * 55} stroke="#000" strokeWidth={2} opacity={0.25} />)}
+    {/* far wall with a window */}
+    <rect x={380} y={520} width={320} height={620} fill="#11201A" />
+    <rect x={380} y={520} width={320} height={620} fill="none" stroke="#3B4541" strokeWidth={16} />
+    <rect x={536} y={520} width={8} height={620} fill="#3B4541" />
+    {/* doors left/right */}
+    {[[60, 420, 240, 900], [780, 420, 240, 900]].map(([x, y, w, h], i) => (
+      <g key={i}>
+        <rect x={x} y={y} width={w} height={h} fill="#3A3027" stroke="#000" strokeWidth={4} />
+        <rect x={x + 24} y={y + 40} width={w - 48} height={h - 80} fill="#443A30" />
+        <circle cx={i === 0 ? x + w - 30 : x + 30} cy={y + h / 2} r={9} fill="#C9A25A" />
+        {numbers && <text x={x + w / 2} y={y + 90} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontSize={34} fill={col.steelLight}>{i === 0 ? "35" : "36"}</text>}
+        {!numbers && <rect x={x + w / 2 - 36} y={y + 62} width={72} height={36} fill="#2B241E" />}
+        {i === 1 && lightUnder > 0 && (
+          <>
+            <rect x={x - 10} y={y + h - 12} width={w + 20} height={18} fill="#FFE9B0" opacity={lightUnder} />
+            <polygon points={`${x - 10},${y + h + 6} ${x + w + 10},${y + h + 6} ${x + w + 80},${y + h + 160} ${x - 80},${y + h + 160}`} fill="#FFE9B0" opacity={0.25 * lightUnder} style={{ filter: "url(#glow2)" }} />
+          </>
+        )}
+      </g>
+    ))}
+    {/* tube */}
+    <rect x={340} y={240} width={400} height={16} rx={8} fill={col.light} opacity={0.85 * tube} />
+    <rect x={240} y={200} width={600} height={400} fill={col.light} opacity={0.09 * tube} style={{ filter: "url(#glow2)" }} />
+    <rect y={1500} width={1080} height={420} fill={col.light} opacity={0.04 * tube} />
+  </g>
+);
+
+/** The view out of the hallway window: the roof of the building below, city lights beyond. */
+export const RoofView: React.FC = () => (
+  <g>
+    <rect width={1080} height={1920} fill="#0A1A20" />
+    {Array.from({ length: 40 }).map((_, i) => <circle key={i} cx={random(`s${i}`) * 1080} cy={random(`t${i}`) * 500} r={1.5} fill="#fff" opacity={0.6} />)}
+    {/* roof seen from above */}
+    <polygon points="140,700 940,700 1080,1920 0,1920" fill="#2A2F2C" />
+    {Array.from({ length: 10 }).map((_, i) => <line key={i} x1={140 + i * 80} y1={700} x2={i * 108} y2={1920} stroke="#000" strokeWidth={2} opacity={0.3} />)}
+    <rect x={420} y={780} width={240} height={200} fill="#1C211E" stroke="#000" strokeWidth={4} />
+    <rect x={480} y={820} width={120} height={160} fill="#0A0C0B" />
+    <rect x={700} y={900} width={60} height={300} fill="#1C211E" />
+    {/* city lights */}
+    {Array.from({ length: 30 }).map((_, i) => <rect key={i} x={random(`cx${i}`) * 1080} y={520 + random(`cy${i}`) * 160} width={14} height={20} fill="#F3D37A" opacity={0.4 + random(`co${i}`) * 0.5} />)}
+    {/* window frame */}
+    <rect x={0} y={0} width={1080} height={1920} fill="none" stroke="#3B4541" strokeWidth={80} />
+    <rect x={530} y={0} width={20} height={1920} fill="#3B4541" />
+  </g>
+);
+
+/** Kitchen seen through the open flat door: a figure with his back to us, phone glow. */
+export const KitchenDouble: React.FC<{ phoneGlow?: number; turn?: number }> = ({ phoneGlow = 1, turn = 0 }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#0C0F0E" />
+    {/* door frame */}
+    <rect x={120} y={200} width={840} height={1600} fill="#2A241E" />
+    <rect x={160} y={240} width={760} height={1560} fill="#1E2420" />
+    {/* kitchen window at the back */}
+    <rect x={380} y={420} width={320} height={300} fill="#0A1A20" />
+    <rect x={380} y={420} width={320} height={300} fill="none" stroke="#3B4541" strokeWidth={10} />
+    {/* calendar */}
+    <g transform="translate(260 520)">
+      <rect x={-70} y={-50} width={140} height={190} fill="#E8E2D2" stroke="#000" strokeWidth={3} />
+      <rect x={-70} y={-50} width={140} height={44} fill="#8A2A2A" />
+      <text x={0} y={-18} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontSize={28} fill="#fff" fontWeight={700}>2003</text>
+      {Array.from({ length: 20 }).map((_, i) => <rect key={i} x={-58 + (i % 5) * 26} y={10 + Math.floor(i / 5) * 28} width={18} height={18} fill="#B8B0A0" />)}
+    </g>
+    {/* table */}
+    <rect x={240} y={1150} width={600} height={40} fill="#3B2E24" />
+    <rect x={270} y={1190} width={24} height={400} fill="#2A2018" />
+    <rect x={786} y={1190} width={24} height={400} fill="#2A2018" />
+    {/* figure, back to us */}
+    <g transform={`translate(540 900) rotate(${turn * 25})`}>
+      <path d="M-150 380 q0 -300 150 -300 q150 0 150 300 Z" fill="#2B3430" />
+      <path d="M60 90 q110 40 90 290 L150 380 q0 -200 -90 -290 Z" fill={col.light} opacity={0.35} />
+      <circle cx={0} cy={0} r={100} fill="#303A35" />
+      <path d="M-100 -20 a100 100 0 0 1 200 0 a130 70 0 0 0 -200 0" fill="#171C19" />
+      <path d="M40 -90 a100 100 0 0 1 60 60 L100 40 a100 100 0 0 1 -30 50" fill="none" stroke={col.light} strokeWidth={10} opacity={0.35} strokeLinecap="round" />
+    </g>
+    {/* phone glow on the figure's right */}
+    <circle cx={700} cy={1000} r={220} fill={col.light} opacity={0.18 * phoneGlow} style={{ filter: "url(#glow2)" }} />
+    <g transform="translate(700 1000) rotate(-12)">
+      <rect x={-60} y={-110} width={120} height={220} rx={14} fill="#0A0A0A" />
+      <rect x={-50} y={-100} width={100} height={200} rx={8} fill="#1E2623" />
+      <g transform="translate(0 0) scale(0.13)"><Panel x={0} y={0} extra={false} /></g>
+    </g>
+  </g>
+);
