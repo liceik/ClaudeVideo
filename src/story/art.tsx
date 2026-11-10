@@ -446,3 +446,39 @@ export const WarmArms: React.FC<{ reach: number }> = ({ reach }) => {
     </g>
   );
 };
+
+/* ───────── Part 4 props ───────── */
+
+/** The double: the kid standing in pyjamas, eyes shut, holding the nightlight. */
+export const Double: React.FC<{ x?: number; y?: number; scale?: number; lamp?: number; offer?: number }> = ({
+  x = 540, y = 1000, scale = 1, lamp = 1, offer = 0,
+}) => (
+  <g transform={`translate(${x} ${y}) scale(${scale})`}>
+    <rect x={-70} y={60} width={140} height={220} rx={34} fill="#5EC2E8" />
+    <rect x={-50} y={280} width={40} height={120} rx={12} fill="#4A9CC0" />
+    <rect x={10} y={280} width={40} height={120} rx={12} fill="#4A9CC0" />
+    <circle cx={0} cy={0} r={78} fill={pal.skin} />
+    <path d="M-78 -10 a78 78 0 0 1 156 0 a100 60 0 0 0 -156 0" fill={pal.hair} />
+    <g transform="translate(0 10)"><Eyes open={false} scale={0.62} /></g>
+    {/* arms holding the lamp out */}
+    <path d={`M-60 110 q-20 ${80 + offer * 40} ${40 + offer * 90} ${150 - offer * 60}`} stroke={pal.skin} strokeWidth={28} fill="none" strokeLinecap="round" />
+    <path d={`M60 110 q20 ${80 + offer * 40} ${-40 + offer * 90} ${150 - offer * 60}`} stroke={pal.skin} strokeWidth={28} fill="none" strokeLinecap="round" />
+    <g transform={`translate(${offer * 90} ${250 - offer * 60}) scale(0.55)`}>
+      <Nightlight x={0} y={0} on={lamp} />
+    </g>
+  </g>
+);
+
+/** Kid on the corridor floor, propped on one arm, eyes shut. */
+export const Fallen: React.FC<{ x?: number; y?: number; scale?: number }> = ({ x = 420, y = 1500, scale = 1 }) => (
+  <g transform={`translate(${x} ${y}) scale(${scale})`}>
+    <rect x={-150} y={-40} width={240} height={100} rx={44} fill="#5EC2E8" />
+    <path d="M-120 50 q-40 50 -70 90" stroke="#5EC2E8" strokeWidth={34} fill="none" strokeLinecap="round" />
+    <path d="M60 40 q20 60 50 110" stroke={pal.skin} strokeWidth={28} fill="none" strokeLinecap="round" />
+    <g transform="translate(120 -70)">
+      <circle cx={0} cy={0} r={66} fill={pal.skin} />
+      <path d="M-66 -10 a66 66 0 0 1 132 0 a84 50 0 0 0 -132 0" fill={pal.hair} />
+      <g transform="translate(6 8)"><Eyes open={false} scale={0.52} squeeze={1} /></g>
+    </g>
+  </g>
+);
