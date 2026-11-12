@@ -8,6 +8,7 @@ import { Story3, STORY3_FPS, STORY3_FRAMES } from "./story/Story3";
 import { Story4, STORY4_FPS, STORY4_FRAMES } from "./story/Story4";
 import { Shift, SHIFT_FPS, SHIFT_FRAMES } from "./shift/Shift";
 import { Shift2, SHIFT2_FPS, SHIFT2_FRAMES } from "./shift/Shift2";
+import { Shift3, SHIFT3_FPS, SHIFT3_FRAMES } from "./shift/Shift3";
 import { Button, BTN_FPS, BTN_FRAMES } from "./button/Button";
 import { Button2, BTN2_FPS, BTN2_FRAMES } from "./button/Button2";
 
@@ -16,6 +17,7 @@ export const RemotionRoot: React.FC = () => {
     <>
       <Composition id="TenthButton2" component={Button2} durationInFrames={BTN2_FRAMES} fps={BTN2_FPS} width={1080} height={1920} />
       <Composition id="TenthButton1" component={Button} durationInFrames={BTN_FRAMES} fps={BTN_FPS} width={1080} height={1920} />
+      <Composition id="NightShift3" component={Shift3} durationInFrames={SHIFT3_FRAMES} fps={SHIFT3_FPS} width={1080} height={1920} />
       <Composition id="NightShift2" component={Shift2} durationInFrames={SHIFT2_FRAMES} fps={SHIFT2_FPS} width={1080} height={1920} />
       <Composition id="NightShift1" component={Shift} durationInFrames={SHIFT_FRAMES} fps={SHIFT_FPS} width={1080} height={1920} />
       <Composition id="Nightlight4" component={Story4} durationInFrames={STORY4_FRAMES} fps={STORY4_FPS} width={1080} height={1920} />

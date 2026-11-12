@@ -478,3 +478,83 @@ export const Badge: React.FC<{ x?: number; y?: number; scale?: number; tagText?:
     <text x={170} y={-57} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontSize={20} fill={INK}>{tagText}</text>
   </g>
 );
+
+/* ───────── Episode 3 props ───────── */
+
+/** Back of the paper tag with handwriting. */
+export const TagBack: React.FC<{ x?: number; y?: number; scale?: number; text?: string; reveal?: number }> = ({ x = 540, y = 960, scale = 1, text = "НЕ ОТКРЫВАЙ ДВЕРЬ В 3:33", reveal = 1 }) => (
+  <g transform={`translate(${x} ${y}) rotate(-5) scale(${scale})`}>
+    <rect x={-240} y={-110} width={480} height={220} fill="#F4EEE2" stroke={INK} strokeWidth={4} />
+    <circle cx={-205} cy={-75} r={10} fill="none" stroke={INK} strokeWidth={3} />
+    <clipPath id="tagReveal"><rect x={-240} y={-110} width={480 * reveal} height={220} /></clipPath>
+    <g clipPath="url(#tagReveal)">
+      <text x={0} y={-10} textAnchor="middle" fontFamily='"Caladea", "Bitstream Charter", serif' fontStyle="italic" fontSize={38} fill="#2A2A46">{text.split(" В ")[0]}</text>
+      <text x={0} y={46} textAnchor="middle" fontFamily='"Caladea", "Bitstream Charter", serif' fontStyle="italic" fontSize={44} fill="#8A2A2A">{text.includes(" В ") ? "В " + text.split(" В ")[1] : ""}</text>
+    </g>
+    <path d="M-220 80 q120 -10 440 6" stroke="#2A2A46" strokeWidth={2} fill="none" opacity={0.3} />
+  </g>
+);
+
+/** An empty tag and a pen lying on the conveyor belt. */
+export const BlankTag: React.FC<{ x?: number; y?: number; scale?: number; pen?: boolean }> = ({ x = 540, y = 1200, scale = 1, pen = true }) => (
+  <g transform={`translate(${x} ${y}) scale(${scale})`}>
+    <g transform="rotate(-8)">
+      <rect x={-120} y={-55} width={240} height={110} fill="#F4EEE2" stroke={INK} strokeWidth={3} />
+      <circle cx={-100} cy={-36} r={6} fill="none" stroke={INK} strokeWidth={2} />
+      <line x1={-80} y1={0} x2={90} y2={0} stroke={INK} strokeWidth={2} opacity={0.35} />
+      <line x1={-80} y1={28} x2={40} y2={28} stroke={INK} strokeWidth={2} opacity={0.25} />
+    </g>
+    {pen && (
+      <g transform="translate(60 80) rotate(25)">
+        <rect x={-120} y={-10} width={240} height={20} rx={8} fill="#1E3B5C" stroke={INK} strokeWidth={3} />
+        <polygon points="120,-10 150,0 120,10" fill="#C9C9C9" stroke={INK} strokeWidth={2} />
+        <rect x={-110} y={-6} width={40} height={12} fill="#E24B4B" />
+      </g>
+    )}
+  </g>
+);
+
+/** The store at night with the lights off: only the register screen glows. */
+export const DarkStore: React.FC<{ word?: string; screen?: number }> = ({ word = "", screen = 1 }) => (
+  <g>
+    <StoreBack light={0.05} fridge={0.15} />
+    <Fridge light={0.15} />
+    <DoorInside glow={0.3} />
+    <Counter />
+    <rect width={1080} height={1920} fill="#02030A" opacity={0.6} />
+    {/* register glow */}
+    <rect x={820} y={1060} width={200} height={90} fill={neon.cyan} opacity={0.45 * screen} />
+    <circle cx={920} cy={1100} r={260} fill={neon.cyan} opacity={0.12 * screen} style={{ filter: "url(#glowSoft)" }} />
+    {word && <text x={920} y={1120} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontWeight={700} fontSize={40} fill={neon.cyan} style={{ filter: "url(#glow)" }}>{word}</text>}
+  </g>
+);
+
+/** Clerk crouching behind the counter, only cap and eyes above the edge. */
+export const Hiding: React.FC<{ x?: number; y?: number; peek?: number }> = ({ x = 600, y = 1240, peek = 0 }) => (
+  <g transform={`translate(${x} ${y - peek * 90})`}>
+    <path d="M-100 -20 a100 100 0 0 1 200 0 Z" fill="#1E3B5C" {...O} />
+    <rect x={-120} y={-28} width={240} height={22} rx={8} fill="#1E3B5C" {...O} />
+    <rect x={-96} y={-6} width={192} height={40 * peek} fill="#F1C7A3" />
+    {peek > 0.5 && [-34, 34].map((ex) => (
+      <g key={ex} transform={`translate(${ex} 14)`}>
+        <ellipse cx={0} cy={0} rx={18} ry={16} fill="#fff" stroke={INK} strokeWidth={4} />
+        <circle cx={0} cy={2} r={8} fill={INK} />
+      </g>
+    ))}
+  </g>
+);
+
+/** Phone screen showing a time, held up in the dark. */
+export const PhoneTime: React.FC<{ time: string }> = ({ time }) => (
+  <g>
+    <rect width={1080} height={1920} fill="#04060C" />
+    <g transform="translate(540 960) rotate(-4)">
+      <rect x={-230} y={-440} width={460} height={880} rx={44} fill="#0A0A0A" stroke={INK} strokeWidth={5} />
+      <rect x={-210} y={-410} width={420} height={820} rx={24} fill="#0E1626" />
+      <text x={0} y={-120} textAnchor="middle" fontFamily='"Inter Display", Inter, sans-serif' fontWeight={200} fontSize={150} fill="#F2F6FF">{time}</text>
+      <text x={0} y={-50} textAnchor="middle" fontFamily='"JetBrains Mono", monospace' fontSize={26} fill="#8E8B84" letterSpacing={3}>СРЕДА, 12 НОЯБРЯ</text>
+      <circle cx={0} cy={320} r={34} fill="none" stroke="#2A3A60" strokeWidth={4} />
+    </g>
+    <circle cx={540} cy={960} r={700} fill="#F2F6FF" opacity={0.05} style={{ filter: "url(#glowSoft)" }} />
+  </g>
+);
